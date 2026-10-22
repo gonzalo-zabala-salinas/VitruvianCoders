@@ -1,0 +1,161 @@
+:root {
+    --naranja-ileo: #FF7300;
+    --gris-oscuro: #333333;
+    --fondo: #f4f5f7;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--fondo);
+    color: var(--gris-oscuro);
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: var(--gris-oscuro);
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+
+.logo {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.logo span {
+    color: var(--naranja-ileo);
+}
+
+main {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.panel-input,
+.panel-resultados {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+input,
+textarea {
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+button {
+    background-color: var(--naranja-ileo);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #e66800;
+}
+
+.oculto {
+    display: none;
+}
+
+.grid-resultados {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.tarjeta {
+    background: #fafafa;
+    border-left: 4px solid var(--naranja-ileo);
+    padding: 1.5rem;
+    border-radius: 4px;
+}
+
+ul {
+    padding-left: 1.2rem;
+}
+
+li {
+    margin-bottom: 0.8rem;
+}
+
+.badge {
+    background: var(--naranja-ileo);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-weight: bold;
+}
+
+#loading {
+    text-align: center;
+    color: var(--naranja-ileo);
+    font-weight: bold;
+    margin-top: 1rem;
+}
+
+.tabs {
+    margin-bottom: 1rem;
+}
+
+.tab-btn {
+    background: #eee;
+    border: 1px solid #ccc;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.tab-btn.activo {
+    background: var(--naranja-ileo);
+    color: white;
+    border-color: var(--naranja-ileo);
+}
+
+.item-lista {
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.badge-mejor {
+    display: inline-block;
+    background-color: #10B981;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.explicacion {
+    font-style: italic;
+    color: #555;
+    margin-top: 0.3rem;
+    font-size: 0.95rem;
+}

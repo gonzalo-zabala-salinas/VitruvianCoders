@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iLEO 360 - Copiloto de Innovación</title>
+    <!-- Cargamos la fuente Inter para un look moderno -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ================= VARIABLES Y RESET ================= */
+        :root {
+            --naranja: #FF7300;
+            --naranja-hover: #e66800;
+            --gris-oscuro: #333333;
+            --gris-medio: #555555;
+            --fondo: #f4f7f9;
+            --superficie: #ffffff;
+            --borde: #e2e8f0;
+            --verde-exito: #10B981;
+            --sombra-suave: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            --sombra-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--fondo);
+            background-image: radial-gradient(circle at top right, rgba(255, 115, 0, 0.05), transparent 40%),
+                              radial-gradient(circle at bottom left, rgba(51, 51, 51, 0.05), transparent 40%);
+            color: var(--gris-oscuro);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ================= ANIMACIONES ================= */
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        .anim-fade-in {
+            animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* ================= HEADER ================= */
+        header {
+            background-color: var(--superficie);
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--gris-oscuro);
+        }
+
+        .logo span { color: var(--naranja); }
+
+        .tagline {
+            font-size: 0.95rem;
+            color: var(--gris-medio);
+            font-weight: 300;
+        }
+
+        /* ================= LAYOUT PRINCIPAL (DASHBOARD) ================= */
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* Responsive: apilar en pantallas pequeñas */
+        @media (max-width: 968px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ================= PANEL IZQUIERDO (GLASSMORPHISM) ================= */
+        .panel-input {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--sombra-suave);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .panel-input h2 {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: var(--gris-oscuro);
+        }
+
+        /* Pestañas */
+        .tabs {
+            display: flex;
+            background: rgba(0,0,0,0.04);
+            border-radius: 8px;
+            padding: 0.3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 0.7rem 1rem;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--gris-medio);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.activo {
+            background: var(--superficie);
+            color: var(--naranja);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Formulario */
+        .input-group {
+            margin-bottom: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gris-oscuro);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"], textarea, input[type="file"] {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 1px solid var(--borde);
+            border-radius: 8px;
+            background: var(--superficie);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            border-color: var(--naranja);
+            box-shadow: 0 0 0 3px rgba(255, 115, 0, 0.15);
+        }
+
+        textarea { resize: vertical; min-height: 120px; }
+
+        input[type="file"] {
+            padding: 0.7rem;
+            cursor: pointer;
+        }
+
+        .btn-principal {
+            background: linear-gradient(135deg, var(--naranja) 0%, #ff5500 100%);
+            color: white;
+            border: none;
+            padding: 1.1rem;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 115, 0, 0.3);
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-principal:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 115, 0, 0.4);
+        }
+        
+        .btn-principal:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .oculto { display: none !important; }
+
+        #loading {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--naranja);
+            text-align: center;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* ================= PANEL DERECHO (RESULTADOS) ================= */
+        .panel-resultados {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .tarjeta-resultado {
+            background: var(--superficie);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--sombra-suave);
+            border-left: 5px solid var(--naranja);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0; /* Para la animación de entrada */
+        }
+
+        .tarjeta-resultado:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--sombra-hover);
+        }
+
+        /* Animación en cascada para las tarjetas */
+        .tarjeta-resultado:nth-child(1) { animation-delay: 0.1s; }
+        .tarjeta-resultado:nth-child(2) { animation-delay: 0.2s; }
+        .tarjeta-resultado:nth-child(3) { animation-delay: 0.3s; }
+
+        .tarjeta-resultado h3 {
+            font-size: 1.2rem;
+            color: var(--gris-oscuro);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--borde);
+            padding-bottom: 0.8rem;
+        }
+
+        /* Elementos internos de las tarjetas */
+        .dato-destacado {
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .badge-trl {
+            background: var(--gris-oscuro);
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-left: 0.5rem;
+        }
+
+        .resumen-texto {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(255, 115, 0, 0.05);
+            border-radius: 8px;
+            font-style: italic;
+            color: var(--gris-medio);
+            border-left: 3px solid var(--naranja);
+        }
+
+        ul.lista-dinamica {
+            list-style: none;
+        }
+
+        .item-lista {
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            background: var(--fondo);
+            border-radius: 8px;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        .item-lista:last-child { margin-bottom: 0; }
+
+        .item-lista:hover {
+            border-color: var(--borde);
+            background: white;
+        }
+
+        .badge-mejor {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--verde-exito) 0%, #059669 100%);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 5px rgba(16, 185, 129, 0.3);
+        }
+
+        .titulo-item {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gris-oscuro);
+            margin-bottom: 0.3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .presupuesto-item {
+            color: var(--verde-exito);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .explicacion {
+            font-size: 0.9rem;
+            color: var(--gris-medio);
+            line-height: 1.5;
+            margin-top: 0.5rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">iLEO 360<span>°</span></div>
+        <div class="tagline">Tu forma para conseguir lo último que necesitas para que tu idea se convierta en realidad</div>
+    </header>
+
+    <div class="dashboard-container">
+        
+        <!-- PANEL IZQUIERDO: INPUTS -->
+        <aside class="panel-input anim-fade-in">
+            <h2>Configura tu Proyecto</h2>
+            
+            <div class="tabs">
+                <button type="button" id="tabTexto" class="tab-btn activo">📝 Texto Breve</button>
+                <button type="button" id="tabArchivo" class="tab-btn">📄 Subir PDF</button>
+            </div>
+
+            <form id="ideaForm">
+                <div class="input-group">
+                    <label for="nombre">Solicitante / Empresa</label>
+                    <input type="text" id="nombre" required placeholder="Ej. TechCorp Solutions">
+                </div>
+
+                <div id="seccionTexto" class="input-group">
+                    <label for="idea">Visión General del Proyecto</label>
+                    <textarea id="idea" required placeholder="Describe tu innovación, tecnología utilizada y objetivos..."></textarea>
+                </div>
+
+                <div id="seccionArchivo" class="input-group oculto">
+                    <label for="archivoResumen">Documento Ejecutivo (.pdf, .txt)</label>
+                    <input type="file" id="archivoResumen" accept=".txt,.pdf,.docx">
+                </div>
+
+                <button type="submit" id="btnAnalizar" class="btn-principal">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    Ejecutar Análisis 360º
+                </button>
+            </form>
+            
+            <div id="loading" class="oculto">
+                Procesando la idea y cruzando datos con las subvenciones y socios...
+            </div>
+        </aside>
+
+        <!-- PANEL DERECHO: RESULTADOS -->
+        <main id="resultados" class="panel-resultados oculto">
+            
+            <!-- Tarjeta 1: Extracción Estructurada -->
+            <div class="tarjeta-resultado anim-fade-in">
+                <h3>📊 Análisis TRL y Sector</h3>
+                <div class="dato-destacado"><strong>Área Temática:</strong> <span id="resSector"></span></div>
+                <div class="dato-destacado"><strong>Vectores Tecnológicos:</strong> <span id="resTech"></span></div>
+                <div class="dato-destacado" style="display: flex; align-items: center; margin-top: 1rem;">
+                    <strong>Madurez Tecnológica:</strong> <span id="resTrl" class="badge-trl"></span>
+                </div>
+                <div class="resumen-texto">" <span id="resResumen"></span> "</div>
+            </div>
+
+            <!-- Tarjeta 2: Socios Estratégicos -->
+            <div class="tarjeta-resultado anim-fade-in">
+                <h3>🤝 Matchmaking: Socios Estratégicos</h3>
+                <ul id="listaSocios" class="lista-dinamica"></ul>
+            </div>
+
+            <!-- Tarjeta 3: Financiación -->
+            <div class="tarjeta-resultado anim-fade-in">
+                <h3>💰 Mapa de Financiación Pública</h3>
+                <ul id="listaSubvenciones" class="lista-dinamica"></ul>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- SCRIPT FRONTEND -->
+    <script>
+        // Lógica de Pestañas
+        const tabTexto = document.getElementById('tabTexto');
+        const tabArchivo = document.getElementById('tabArchivo');
+        const seccionTexto = document.getElementById('seccionTexto');
+        const seccionArchivo = document.getElementById('seccionArchivo');
+        const textareaIdea = document.getElementById('idea');
+        const inputArchivo = document.getElementById('archivoResumen');
+        let modoActual = 'texto';
+
+        tabTexto.addEventListener('click', () => {
+            modoActual = 'texto';
+            tabTexto.classList.add('activo');
+            tabArchivo.classList.remove('activo');
+            seccionTexto.classList.remove('oculto');
+            seccionArchivo.classList.add('oculto');
+            textareaIdea.required = true;
+            inputArchivo.required = false;
+        });
+
+        tabArchivo.addEventListener('click', () => {
+            modoActual = 'archivo';
+            tabArchivo.classList.add('activo');
+            tabTexto.classList.remove('activo');
+            seccionArchivo.classList.remove('oculto');
+            seccionTexto.classList.add('oculto');
+            inputArchivo.required = true;
+            textareaIdea.required = false;
+        });
+
+        // Lógica de Envío
+        document.getElementById('ideaForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const nombre = document.getElementById('nombre').value;
+            const btn = document.getElementById('btnAnalizar');
+            const loading = document.getElementById('loading');
+            const panelResultados = document.getElementById('resultados');
+
+            // Reset UI para animaciones
+            panelResultados.classList.add('oculto');
+            
+            // Forzar reinicio de animaciones eliminando y clonando el nodo (truco JS)
+            const nuevoPanel = panelResultados.cloneNode(true);
+            panelResultados.parentNode.replaceChild(nuevoPanel, panelResultados);
+            const panelAnimado = document.getElementById('resultados');
+
+            // Estados de Carga
+            btn.disabled = true;
+            btn.innerHTML = 'Analizando...';
+            document.getElementById('loading').classList.remove('oculto');
+
+            const formData = new FormData();
+            formData.append('nombre_cliente', nombre);
+            formData.append('modo', modoActual);
+
+            if (modoActual === 'texto') {
+                formData.append('idea_texto', document.getElementById('idea').value);
+            } else {
+                const archivo = document.getElementById('archivoResumen').files[0];
+                formData.append('archivo', archivo);
+            }
+
+            try {
+                const response = await fetch('/api/analizar', {
+                    method: 'POST',
+                    body: formData 
+                });
+
+                const data = await response.json();
+
+                if (data.estado === 'exito') {
+                    // Rellenar Datos
+                    document.getElementById('resSector').textContent = data.analisis_ia.sector;
+                    document.getElementById('resTech').textContent = data.analisis_ia.tecnologias.join(' • ');
+                    document.getElementById('resTrl').textContent = "TRL " + data.analisis_ia.madurez_trl;
+                    document.getElementById('resResumen').textContent = data.analisis_ia.resumen_ejecutivo;
+
+                    // Procesar Socios
+                    const listaSocios = document.getElementById('listaSocios');
+                    listaSocios.innerHTML = '';
+                    if (data.socios && data.socios.length > 0) {
+                        data.socios.forEach(s => {
+                            const badge = s.es_mejor_opcion ? '<div class="badge-mejor">⭐ MATCH ÓPTIMO</div>' : '';
+                            const boxClass = s.es_mejor_opcion ? 'item-lista' : 'item-lista';
+                            listaSocios.innerHTML += `
+                                <li class="${boxClass}" style="${s.es_mejor_opcion ? 'border-left: 3px solid var(--verde-exito); background: #f0fdf4;' : ''}">
+                                    ${badge}
+                                    <div class="titulo-item">${s.nombre}</div>
+                                    <div class="explicacion">${s.explicacion}</div>
+                                </li>`;
+                        });
+                    } else {
+                        listaSocios.innerHTML = '<li class="item-lista">No se encontraron socios exactos para este proyecto.</li>';
+                    }
+
+                    // Procesar Subvenciones
+                    const listaSubvenciones = document.getElementById('listaSubvenciones');
+                    listaSubvenciones.innerHTML = '';
+                    if (data.subvenciones && data.subvenciones.length > 0) {
+                        data.subvenciones.forEach(sub => {
+                            const badge = sub.es_mejor_opcion ? '<div class="badge-mejor">🔥 RECOMENDADA</div>' : '';
+                            const formatMoney = new Intl.NumberFormat('es-ES').format(sub.presupuesto || 0);
+                            
+                            listaSubvenciones.innerHTML += `
+                                <li class="item-lista" style="${sub.es_mejor_opcion ? 'border-left: 3px solid var(--verde-exito); background: #f0fdf4;' : ''}">
+                                    ${badge}
+                                    <div class="titulo-item">
+                                        <span>${sub.titulo}</span>
+                                        <span class="presupuesto-item">Hasta ${formatMoney} €</span>
+                                    </div>
+                                    <div class="explicacion">${sub.explicacion}</div>
+                                </li>`;
+                        });
+                    } else {
+                        listaSubvenciones.innerHTML = '<li class="item-lista">No hay convocatorias activas para este sector.</li>';
+                    }
+
+                    // Mostrar con animaciones
+                    panelAnimado.classList.remove('oculto');
+                } else {
+                    alert('Error en el análisis: ' + data.mensaje);
+                }
+            } catch (error) {
+                alert('Fallo de conexión. ¿Está corriendo el servidor main.py?');
+                console.error(error);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Ejecutar Análisis 360º';
+                document.getElementById('loading').classList.add('oculto');
+            }
+        });
+    </script>
+</body>
+</html>
